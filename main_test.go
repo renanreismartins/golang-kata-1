@@ -1,19 +1,10 @@
 package main
 
-import (
-	. "github.com/onsi/gomega"
-	"testing"
-)
+import "testing"
 
-func TestWelcomeMessage(t *testing.T) {
-	g := NewGomegaWithT(t)
-
-	// given
-	expected := "Hello world!"
-
-	// than
-	actual := welcomeMessage()
-
-	// that
-	g.Expect(actual).To(Equal(expected))
+func TestAbs(t *testing.T) {
+	got := welcomeMessage()
+	if got != "Hi" {
+		t.Errorf("welcomeMessage() = %s; want Hi", got)
+	}
 }
