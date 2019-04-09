@@ -9,22 +9,26 @@ import "time"
 
 func main() {
 	fmt.Println(welcomeMessage())
+}
+
+func readAuthors(path string) []author {
+	file, _ := os.Open(path)
+	reader := csv.NewReader(file)
+	reader.Comma = ';'
+
+	csvData, err := reader.ReadAll()
+	if err != nil {
+		fmt.Println("Error reading file")
+		fmt.Println(err) // TODO: Investigate if reading a file that does not exist ReadAll return an error 'invalid argument', no stacktrace; Research about better error handling
+		os.Exit(1) // TODO: Does not sound good exiting the process; maybe return an empty array?!
+	}
 
 	var authors []author
-	csvfile, _ := os.Open("resources/authors.csv")
-	r := csv.NewReader(csvfile)
-	r.Comma = ';'
-
-	csvData, err := r.ReadAll()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
 	for _, column := range csvData {
 		authors = append(authors, author{email: column[0], firstName: column[1], lastName: column[2]})
 	}
 
-	fmt.Println(authors)
+	return authors[1:] // Remove first line; CSV header
 }
 
 type author struct {
